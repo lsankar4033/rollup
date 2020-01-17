@@ -1,0 +1,7 @@
+version: '3'
+services:
+  cli-pos:
+    network_mode: "host"
+    build: .
+    stdin_open: true
+    tty: true

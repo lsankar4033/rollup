@@ -78,3 +78,14 @@ rollup-cli/src/resources/
 
 cli-pos/wallet-test.json
 cli-pos/config.json
+
+docker/docker-operator/config-operator/wallet.json
+docker/docker-operator/config-operator/synch-config.json
+docker/docker-operator/config-operator/pool-config.json
+
+docker/docker-cli-pos/config-cli-pos/config.json
+docker/docker-cli-pos/config-cli-pos/wallet.json
+docker/docker-cli-pos/config-cli-pos/synch-config.json
+
+docker/docker-webapp/config-webapp/synch-config.json
+docker/docker-webapp/config-webapp/config.json
