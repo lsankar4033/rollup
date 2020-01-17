@@ -7,4 +7,5 @@ path_wallet="{pwd}/rollup-operator/src/server/wallet.json"
 echo "MNEMONIC = \"$MNEMONIC\"
 URL = \"$URL\"
 INDEX_ACCOUNT = \"$INDEX_ACCOUNT\"
-ACCOUNT_TOKEN_FEES = \"$ACCOUNT_TOKEN_FEES\"" > config.env
+ACCOUNT_TOKEN_FEES = \"$ACCOUNT_TOKEN_FEES\"
+PASSWORD = \"$PASSWORD\"" > config.env

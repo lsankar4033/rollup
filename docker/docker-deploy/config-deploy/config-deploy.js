@@ -10,6 +10,7 @@ const fs = require("fs");
 const path = require("path");
 const configSynchPath = path.join(__dirname, "./synch-config.json");
 const configPoolPath = path.join(__dirname, "./pool-config.json");
+const walletPath = path.join(__dirname, "./wallet.json");
 
 const pathRollupSynch = path.join(__dirname, "./rollup-operator/src/server/tmp-0");
 const pathRollupTree = path.join(__dirname, "./rollup-operator/src/server/tmp-1");
@@ -29,25 +30,26 @@ async function createConfig(){
     require("dotenv").config({ path: pathEnvironmentFile });
     
     const web3 = new Web3(process.env.URL);
-    const account = ethers.Wallet.fromMnemonic(process.env.MNEMONIC, `m/44'/60'/0'/0/${process.env.INDEX_ACCOUNT}`).address;
-    const accountTokens = ethers.Wallet.fromMnemonic(process.env.MNEMONIC, `m/44'/60'/0'/0/2`).address;
+    const account = ethers.Wallet.fromMnemonic(process.env.MNEMONIC, `m/44'/60'/0'/0/${process.env.INDEX_ACCOUNT}`);
+    const encWallet = await account.encrypt(process.env.PASSWORD);
+    const accountTokens = ethers.Wallet.fromMnemonic(process.env.MNEMONIC, `m/44'/60'/0'/0/${process.env.INDEX_ACCOUNT_TOKEN_FEES}`).address;
     const poseidonUnitContract = new web3.eth.Contract(poseidonUnit.abi);
     const verifierContract = new web3.eth.Contract(verifier.abi);
     const rollupContract = new web3.eth.Contract(rollup.abi);
     const rollupPosContract = new web3.eth.Contract(rollupPos.abi);
 
     insPoseidonUnit = await poseidonUnitContract.deploy({data: poseidonUnit.createCode()})
-        .send({ gas: 2500000, from: account});
+        .send({ gas: 2500000, from: account.address});
     insVerifier = await verifierContract.deploy({ data: verifier.bytecode })
-        .send({ gas: 2500000, from: account});
-    insRollup = await rollupContract.deploy({data: rollup.bytecode, arguments: [insVerifier._address, insPoseidonUnit._address, maxTx, maxOnChainTx, process.env.ACCOUNT_TOKEN_FEES] })
-        .send({ gas: 4500000, from: account})
+        .send({ gas: 2500000, from: account.address});
+    insRollup = await rollupContract.deploy({data: rollup.bytecode, arguments: [insVerifier._address, insPoseidonUnit._address, maxTx, maxOnChainTx, accountTokens] })
+        .send({ gas: 4500000, from: account.address})
         .on("transactionHash", function(transactionHash){
             creationHashRollup = transactionHash;
             console.log(transactionHash)
         });
     insRollupPos = await rollupPosContract.deploy({data: rollupPos.bytecode, arguments: [insRollup._address, maxTx]})
-        .send({ gas: 4500000, from: account})
+        .send({ gas: 4500000, from: account.address})
         .on("transactionHash", function(transactionHash){
             creationHashRollupPos = transactionHash;
             console.log(transactionHash)
@@ -81,6 +83,7 @@ async function createConfig(){
 
     fs.writeFileSync(configSynchPath, JSON.stringify(configSynch));
     fs.writeFileSync(configPoolPath, JSON.stringify(configPool));
+    fs.writeFileSync(walletPath, JSON.stringify(JSON.parse(encWallet)));
 }
 
 createConfig();

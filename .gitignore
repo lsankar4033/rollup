@@ -81,6 +81,7 @@ cli-pos/config.json
 
 docker/docker-deploy/config-deploy/synch-config.json
 docker/docker-deploy/config-deploy/pool-config.json
+docker/docker-deploy/config-deploy/wallet.json
 
 docker/docker-operator/config-operator/wallet.json
 docker/docker-operator/config-operator/synch-config.json
