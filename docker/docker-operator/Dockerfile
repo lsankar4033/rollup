@@ -11,6 +11,6 @@ RUN mv synch-config.json ./rollup-operator/src/server/
 RUN mv wallet.json ./rollup-operator/src/server/
 RUN mv config.env ./rollup-operator/src/server/
 
-EXPOSE 9001
+EXPOSE 9000
 
 CMD ["sh","-c","./run-operator.sh"]

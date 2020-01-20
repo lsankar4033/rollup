@@ -8,6 +8,6 @@ const config = {
     nodeUrl: configSynch.ethNodeUrl,
     posAddress: configSynch.rollupPoS.address,
     posAbi: configSynch.rollupPoS.abi
-}
+};
 
 fs.writeFileSync(configPath, JSON.stringify(config));

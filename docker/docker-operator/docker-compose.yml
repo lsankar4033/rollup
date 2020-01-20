@@ -4,7 +4,7 @@ services:
   operator:
     network_mode: "host"
     ports:
-      - "9001:9001"
+      - "9000:9000"
     build: .
     env_file:
       - ./config.env
